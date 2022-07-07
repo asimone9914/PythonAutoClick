@@ -1,13 +1,20 @@
 import tkinter as tk
 from tkinter import StringVar, messagebox
-from autoclick_backend import AutoClickApp
+from autoclick import AutoClick
 from pynput.keyboard import Listener, Key
+
 
 """
 Python Auto Clicker GUI
 
 NOTES:
-        v0.3
+        v1.4
+        * Renamed modules and functions to be more "Pythonic"
+        * Removed quit function redundancy
+        * Minimize to tray when Start pressed
+        * Changed versions to make more sense
+
+        v1.3
         * Redesigned UI in OOP style
         * Change input values by pressing Start while clicking stopped
         * Escape key works in every fashion
@@ -16,15 +23,14 @@ NOTES:
         * More exception handling
         * updated icon
 
-        v0.2
+        v1.2
         * Exception Handling
-        * Implemented Quit via Escape key, kind of buggy (Fixed in v0.3)
+        * Implemented Quit via Escape key, kind of buggy (Fixed in v1.3)
         * Fixed performance issues
-
 
 """
 
-vers = "v0.3"
+vers = "v1.4"
 
 keys = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
         "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
@@ -49,28 +55,29 @@ class AutoClickGUI(tk.Tk):
         self.enable_key = StringVar()
         self.stop_key = StringVar()
         self.seconds = tk.DoubleVar()
+
         self.enable_key.set("z")
         self.stop_key.set("x")
         self.seconds.set(0.5)
 
-        self.backend = AutoClickApp()
-        self.backend.setValues(self.enable_key.get(),
-                               self.stop_key.get(), self.seconds.get())
+        self.ac = AutoClick()
+        self.ac.set_values(self.enable_key.get(),
+                           self.stop_key.get(), self.seconds.get())
 
         self.listener = Listener(on_press=self.on_press)
         self.listener.start()
 
-        self.setWidgets()
+        self.set_widgets()
         self.mainloop()
 
     def on_press(self, key):
         if key == Key.esc:
             self.exit_program()
 
-    def setValues(self):
+    def set_values(self):
         try:
             if self.seconds.get() > 0:
-                self.backend.setValues(
+                self.ac.set_values(
                     self.enable_key.get(), self.stop_key.get(), self.seconds.get())
             else:
                 messagebox.showwarning(
@@ -81,10 +88,10 @@ class AutoClickGUI(tk.Tk):
                 "An error occured", "Make sure you enter a number for Click Interval!")
 
     def exit_program(self):
-        self.backend.quit()
+        self.ac.quit()
         self.destroy()
 
-    def setWidgets(self):
+    def set_widgets(self):
         # LOGO:
         logo = tk.Label(
             self, text=f"Python Auto Clicker {vers}", font=("Arial, 12",))
@@ -116,7 +123,7 @@ class AutoClickGUI(tk.Tk):
 
         # BUTTON:  Start the service
         enableButton = tk.Button(frame, text="Start",
-                                 anchor='center', command=lambda: [self.setValues(), self.backend.startService()])
+                                 anchor='center', command=lambda: [self.wm_state("iconic"), self.ac.start_service(), self.set_values()])
         enableButton.grid(row=5, columnspan=3, pady=12, ipadx=20, ipady=5)
 
 
