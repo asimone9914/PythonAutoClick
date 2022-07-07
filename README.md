@@ -11,8 +11,4 @@ This is my attempt at a Python auto-clicker with a GUI.
 * Renamed modules and functions to be more "Pythonic"
 * Removed quit function redundancy
 * Minimize to tray when Start pressed
-* Changed versions to make more sense
-
-## Things to fix:  
-* Show an icon in Windows explorer
-* Minimize to tray when Start button clicked
+* Changed version names to make more sense
