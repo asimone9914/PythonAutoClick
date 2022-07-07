@@ -6,7 +6,7 @@ This is my attempt at a Python auto-clicker with a GUI.
 * Redesigned GUI in OOP style
 * Change input values by pressing Start while clicking is stopped
 * Escape key works in every fashion
-  _time to close dependent on Click Interval, will try to fix_
+(_time to close dependent on Click Interval, will try to fix_)
 * Window 'X' button works in every fashion
 * More exception handling
 * updated icon
